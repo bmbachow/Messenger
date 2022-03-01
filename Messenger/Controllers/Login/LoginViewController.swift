@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class LoginViewController: UIViewController {
 
@@ -22,37 +23,7 @@ class LoginViewController: UIViewController {
         return imageView
     }()
     
-//    private let firstNameField: UITextField = {
-//        let field = UITextField()
-//        field.autocapitalizationType = .none
-//        field.autocorrectionType = .no
-//        field.returnKeyType = .continue
-//        field.layer.cornerRadius = 12
-//        field.layer.borderWidth = 1
-//        field.layer.borderColor = UIColor.lightGray.cgColor
-//        field.placeholder = "First Name..."
-//        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
-//        field.leftViewMode = .always
-//        field.backgroundColor = .white
-//
-//        return field
-//    }()
-//
-//    private let lastNameField: UITextField = {
-//        let field = UITextField()
-//        field.autocapitalizationType = .none
-//        field.autocorrectionType = .no
-//        field.returnKeyType = .continue
-//        field.layer.cornerRadius = 12
-//        field.layer.borderWidth = 1
-//        field.layer.borderColor = UIColor.lightGray.cgColor
-//        field.placeholder = "Last Name..."
-//        field.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 5, height: 0))
-//        field.leftViewMode = .always
-//        field.backgroundColor = .white
-//
-//        return field
-//    }()
+
     
     private let emailField: UITextField = {
         let field = UITextField()
@@ -114,8 +85,7 @@ class LoginViewController: UIViewController {
         
         view.addSubview(scrollView)
         scrollView.addSubview(imageView)
-//        scrollView.addSubview(firstNameField)
-//        scrollView.addSubview(lastNameField)
+
         scrollView.addSubview(emailField)
         scrollView.addSubview(passwordField)
         scrollView.addSubview(registerButton)
@@ -129,14 +99,7 @@ class LoginViewController: UIViewController {
                                  y: 20,
                                  width: size,
                                  height: size)
-//        firstNameField.frame = CGRect(x: 30,
-//                                  y: imageView.bottom + 10,
-//                                  width: scrollView.width - 60,
-//                                 height: 52)
-//        lastNameField.frame = CGRect(x: 30,
-//                                  y: firstNameField.bottom + 10,
-//                                  width: scrollView.width - 60,
-//                                 height: 52)
+
         emailField.frame = CGRect(x: 30,
                                   y: imageView.bottom + 10,
                                   width: scrollView.width - 60,
@@ -160,7 +123,19 @@ class LoginViewController: UIViewController {
         }
         
         // firebase login
-        
+        FirebaseAuth.Auth.auth().signIn(withEmail: email, password: password, completion: { [weak self] authResult, error in
+            guard let strongSelf = self else {
+                return
+            }
+            guard let result = authResult, error == nil else {
+                print("Failed to log in user with email: \(email)")
+                return
+            }
+            
+            let user = result.user
+            print("Logged In User: \(user)")
+            strongSelf.navigationController?.dismiss(animated: true, completion: nil)
+        })
     }
     
     func alertUserLoginError(){
