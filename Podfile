@@ -16,8 +16,19 @@ target 'Messenger' do
     # Pods for testing
   end
 
+# Firebase
 pod 'Firebase/Core'
 pod 'Firebase/Auth'
 pod 'Firebase/Database'
+
+# Google Sign In
+pod 'GoogleSignIn', '~> 5.0.2'
+
+#pod 'MessageKit'
+#, '~> 3.1.0'
+
+#pod 'JGProgressHUD', '~> 2.1'
+#pod 'RealmSwift'
+#pod 'SDWebImage', '~> 5.8.0'
 
 end
